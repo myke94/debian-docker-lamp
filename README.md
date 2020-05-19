@@ -25,7 +25,7 @@ A Debian buster slim Docker LAMP. Everything is in one container.
 
 To access the web server visit [https://localhost:443](https://localhost:443) for SSL or [http://localhost](http://localhost) for no SSL.
 
-To access phpMyadmin visit [https://localhost/adminer](https://localhost/adminer)
+To access Adminer visit [https://localhost/adminer](https://localhost/adminer)
 
 To access Supervisor status visit [http://localhost:9001](http://localhost:9001)
 
