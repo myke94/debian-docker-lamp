@@ -60,8 +60,9 @@ RUN wget https://github.com/vrana/adminer/releases/download/v$ADMINER_VERSION/ad
 RUN mkdir /usr/share/adminer
 RUN mv adminer-$ADMINER_VERSION.php /usr/share/adminer/index.php
 RUN chown -R www-data:www-data /usr/share/adminer
-RUN ln -s /usr/share/adminer /var/www/html/adminer
 COPY style/adminer.css /usr/share/adminer/adminer.css
+COPY conf/adminer.conf /etc/apache2/conf-available/adminer.conf
+RUN a2enconf adminer.conf
 
 # Install supervisor
 RUN apt-get install -y supervisor
