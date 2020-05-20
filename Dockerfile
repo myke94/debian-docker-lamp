@@ -31,7 +31,10 @@ RUN a2enmod headers
 # Install PHP
 ENV PHP_VERSION 7.3
 
-RUN apt-get install -y php libapache2-mod-php php-cli php-fpm php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-common php-dom php-simplexml php-ssh2 php-xmlreader php-exif  php-ftp php-iconv php-imagick php-posix php-sockets php-tokenizer php-imap php-bz2 php-intl php-gmp php-gettext
+RUN apt-get install -y php libapache2-mod-php php-cli php-fpm \
+    php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear \
+    php-bcmath php-common php-dom php-simplexml php-ssh2 php-xmlreader php-exif php-ftp \
+    php-iconv php-imagick php-posix php-sockets php-tokenizer php-imap php-bz2 php-intl php-gmp php-gettext
 RUN sed -i.back -f php_replace.sed /etc/php/$PHP_VERSION/apache2/php.ini
 RUN sed -i.back -f replace_opcache.sed /etc/php/$PHP_VERSION/apache2/conf.d/10-opcache.ini
 RUN cat xdebug.ini >> /etc/php/$PHP_VERSION/apache2/conf.d/15-xdebug.ini
