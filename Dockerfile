@@ -15,9 +15,6 @@ RUN sed -i.back -f php_replace.sed /etc/php/$PHP_VERSION/apache2/php.ini
 RUN sed -i.back -f replace_opcache.sed /etc/php/$PHP_VERSION/apache2/conf.d/10-opcache.ini
 RUN cat xdebug.ini >> /etc/php/$PHP_VERSION/apache2/conf.d/15-xdebug.ini
 
-# On peut éditer les options de PHP via le fichier /etc/php/$PHP_VERSION/apache2/php.ini
-# ou créer un fichier personnalisé dans /etc/php/$PHP_VERSION/apache2/conf.d.
-
 # Install mariadb
 RUN apt-get install -y mariadb-server mariadb-client
 
@@ -26,43 +23,25 @@ RUN service mysql start && \
     mysqladmin -u root password "docker" && \
     mysql -u root -pdocker -e "DELETE FROM mysql.user WHERE User='';" && \
     mysql -u root -pdocker -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1');" && \
-    # mysql -u root -pdocker -e "DROP DATABASE test;" && \
     mysql -u root -pdocker -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';" && \
-	# mysql -u root -pdocker -e "CREATE DATABASE phpmyadmin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" && \
-	mysql -u root -pdocker -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY 'docker';" && \
-    # mysql -u root -pdocker -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost IDENTIFIED BY 'docker' WITH GRANT OPTION;" && \
+    mysql -u root -pdocker -e "GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY 'docker';" && \
     mysql -u root -pdocker -e "FLUSH PRIVILEGES;"
 
 RUN sed -i 's/password = /password = docker/' /etc/mysql/debian.cnf
+RUN sed -i 's/bind-address/#bind-address/' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # Install openssl pour https : mod SSL
 RUN apt-get install -y openssl
 RUN a2enmod ssl
 RUN a2ensite default-ssl
 
-# Install phpMyAdmin
-#ENV PMA_VERSION 5.0.2
-
-#RUN wget https://files.phpmyadmin.net/phpMyAdmin/$PMA_VERSION/phpMyAdmin-$PMA_VERSION-all-languages.tar.gz
-#RUN tar xvf phpMyAdmin-$PMA_VERSION-all-languages.tar.gz
-#RUN mv phpMyAdmin-$PMA_VERSION-all-languages /usr/share/phpmyadmin
-#RUN chown -R www-data:www-data /usr/share/phpmyadmin
-#RUN mkdir -p /var/lib/phpmyadmin/tmp
-#RUN chown www-data:www-data /var/lib/phpmyadmin/tmp
-#COPY conf/phpmyadmin.conf /etc/apache2/conf-available/phpmyadmin.conf
-#RUN a2enconf phpmyadmin.conf
-#COPY conf/config.inc.php /usr/share/phpmyadmin/config.inc.php
-#RUN rm phpMyAdmin-$PMA_VERSION-all-languages.tar.gz
-
 # Install Apache
 RUN apt-get install -y apache2 apache2-doc libapache2-mod-php apache2-utils
 RUN a2enmod rewrite
 RUN a2enmod deflate
 RUN a2enmod headers
-# Tous les modules se trouvent dans /etc/apache2/mods-available et ceux activés dans /etc/apache2/mods-enabled
 
-# Install adminer à la place de phpmyadmin ! plus simple
-# on pourra y accéder à l'adresse http://127.0.0.1/adminer
+# Install adminer
 ENV ADMINER_VERSION 4.7.7
 RUN wget https://github.com/vrana/adminer/releases/download/v$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
 RUN mkdir /usr/share/adminer
@@ -94,7 +73,7 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install -g less
 
-# nettoyage des fichiers
+# file cleaning
 RUN rm php_replace.sed
 RUN rm replace_opcache.sed
 RUN rm xdebug.ini
