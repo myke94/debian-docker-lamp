@@ -11,10 +11,11 @@ RUN apt-get install -y wget nano sudo curl unzip git systemd gnupg2 ca-certifica
 RUN apt-get install -y openssh-server
 RUN ufw allow ssh
 RUN echo 'root:docker' | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
+RUN apt-get install -y passwd
 RUN ssh-keygen -A
 RUN mkdir -p /run/sshd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
 
 # Install openssl pour https : mod SSL
 RUN apt-get install -y openssl
