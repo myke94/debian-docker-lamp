@@ -7,6 +7,26 @@ COPY conf/xdebug.ini /
 RUN apt-get update
 RUN apt-get install -y wget nano sudo curl unzip git systemd gnupg2 ca-certificates lsb-release apt-transport-https ufw
 
+# Install SSH
+RUN apt-get install -y openssh-server
+RUN ufw allow ssh
+RUN echo 'root:docker' | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
+RUN ssh-keygen -A
+RUN mkdir -p /run/sshd
+
+# Install openssl pour https : mod SSL
+RUN apt-get install -y openssl
+RUN a2enmod ssl
+RUN a2ensite default-ssl
+
+# Install Apache
+RUN apt-get install -y apache2 apache2-doc libapache2-mod-php apache2-utils
+RUN a2enmod rewrite
+RUN a2enmod deflate
+RUN a2enmod headers
+
 # Install PHP
 ENV PHP_VERSION 7.3
 
@@ -30,17 +50,6 @@ RUN service mysql start && \
 RUN sed -i 's/password = /password = docker/' /etc/mysql/debian.cnf
 RUN sed -i 's/bind-address/#bind-address/' /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# Install openssl pour https : mod SSL
-RUN apt-get install -y openssl
-RUN a2enmod ssl
-RUN a2ensite default-ssl
-
-# Install Apache
-RUN apt-get install -y apache2 apache2-doc libapache2-mod-php apache2-utils
-RUN a2enmod rewrite
-RUN a2enmod deflate
-RUN a2enmod headers
-
 # Install adminer
 ENV ADMINER_VERSION 4.7.7
 RUN wget https://github.com/vrana/adminer/releases/download/v$ADMINER_VERSION/adminer-$ADMINER_VERSION.php
@@ -49,15 +58,6 @@ RUN mv adminer-$ADMINER_VERSION.php /usr/share/adminer/index.php
 RUN chown -R www-data:www-data /usr/share/adminer
 RUN ln -s /usr/share/adminer /var/www/html/adminer
 COPY style/adminer.css /usr/share/adminer/adminer.css
-
-# Install SSH
-RUN apt-get install -y openssh-server
-RUN ufw allow ssh
-RUN echo 'root:docker' | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
-RUN ssh-keygen -A
-RUN mkdir -p /run/sshd
 
 # Install supervisor
 RUN apt-get install -y supervisor
