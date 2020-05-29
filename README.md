@@ -27,13 +27,13 @@ A Debian buster slim Docker LAMP. Everything is in one container.
 
 To access the web server visit [https://localhost:443](https://localhost:443) for SSL or [http://localhost](http://localhost) for no SSL.
 
-To access phpinfo visit [https://localhost/phpinfo](https://localhost/phpinfo)
+To access phpinfo visit [http://localhost/phpinfo](http://localhost/phpinfo)
 
 To access adminer visit [https://localhost/adminer](https://localhost/adminer)
 
-To access PimpMyLog visit [https://localhost/pimpmylog](https://localhost/pimpmylog)
+To access PimpMyLog visit [http://localhost/pimpmylog](http://localhost/pimpmylog)
 
-To access MailDev visit [https://localhost:1080](https://localhost:1080)
+To access MailDev visit [http://localhost:1080](http://localhost:1080)
 
 To access Supervisor status visit [http://localhost:9001](http://localhost:9001)
 
