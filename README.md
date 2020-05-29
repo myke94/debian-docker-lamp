@@ -27,6 +27,8 @@ A Debian buster slim Docker LAMP. Everything is in one container.
 
 To access the web server visit [https://localhost:443](https://localhost:443) for SSL or [http://localhost](http://localhost) for no SSL.
 
+To access default page apache visit [http://localhost/apache](http://localhost/apache)
+
 To access phpinfo visit [http://localhost/phpinfo](http://localhost/phpinfo)
 
 To access adminer visit [https://localhost/adminer](https://localhost/adminer)
