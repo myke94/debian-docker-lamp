@@ -4,3 +4,5 @@ s:^;always_populate_raw_post_data = -1$:always_populate_raw_post_data = -1:
 s:^post_max_size = 8M$:post_max_size = 1G:
 s:^upload_max_filesize = 2M$:upload_max_filesize = 1G:
 s:^max_execution_time = 30$:max_execution_time = 0:
+s:^smtp_port = 25$:smtp_port = 1025:
+s:^;error_log = php_errors.log$:error_log = /var/log/php/php_errors.log:
