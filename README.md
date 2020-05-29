@@ -17,15 +17,23 @@ A Debian buster slim Docker LAMP. Everything is in one container.
 - NodeJS
 - NPM
 - LESSC
+- PimpMyLog
+- MailDev
 
 # Example Usage with Data Inside Docker
 
  Download and run this container with: 
-``docker run -d -p 80:80 -p 443:443 -p 22:22 -p 25:25 -p 3306:3306 -p 9000:9000 -p 9001:9001 -t myke94/debian-docker-lamp:latest``
+``docker run -d -p 22:22 -p 25:25 -p 80:80 -p 443:443 -p 1080:1080 -p 3306:3306 -p 9000:9000 -p 9001:9001 -t myke94/debian-docker-lamp:latest``
 
 To access the web server visit [https://localhost:443](https://localhost:443) for SSL or [http://localhost](http://localhost) for no SSL.
 
-To access Adminer visit [https://localhost/adminer](https://localhost/adminer)
+To access phpinfo visit [https://localhost/phpinfo](https://localhost/phpinfo)
+
+To access adminer visit [https://localhost/adminer](https://localhost/adminer)
+
+To access PimpMyLog visit [https://localhost/pimpmylog](https://localhost/pimpmylog)
+
+To access MailDev visit [https://localhost:1080](https://localhost:1080)
 
 To access Supervisor status visit [http://localhost:9001](http://localhost:9001)
 
@@ -34,6 +42,7 @@ Attach to the container by running:
 
 SSH to the container by running:
 `ssh root@localhost -p 22` Use password: docker. For Windows and Mac substitute `localhost` with the IP of your docker.
+Default root password is docker.
 
 Put your web code in /var/www/html/ inside the docker.
 
@@ -46,15 +55,11 @@ Move into the project folder:
 `cd project`
 
 Run the command to launch the docker and map project and database directory:
-``docker run -d -p 80:80 -p 443:443 -p 22:22 -p 25:25 -p 3306:3306 -p 9000:9000 -p 9001:9001 -v `pwd`/html:/var/www/html -v `pwd`/database:/var/lib/phpMyAdmin/upload -t myke94/debian-docker-lamp:latest``
+``docker run -d -p 22:22 -p 25:25 -p 80:80 -p 443:443 -p 1080:1080 -p 3306:3306 -p 9000:9000 -p 9001:9001 -v `pwd`/html:/var/www/html -v `pwd`/database:/var/lib/adminer/upload -t myke94/debian-docker-lamp:latest``
 
 You can now move a copy of your project files into the html folder and move an .sql dump into the database folder, or upload it using Adminer. 
 
 To access the web server visit [https://localhost:443](https://localhost:443) for SSL or [http://localhost](http://localhost) for no SSL.
-
-To access phpMyadmin visit [https://localhost/adminer](https://localhost/adminer)
-
-To access Supervisor status visit [http://localhost:9001](http://localhost:9001)
 
 # To access the database with HeidiSQL
 
