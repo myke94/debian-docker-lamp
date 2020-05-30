@@ -22,7 +22,6 @@ RUN apt-get install -y \
 	ca-certificates \
 	lsb-release \
 	apt-transport-https \
-	ufw \
 	telnet
 
 RUN apt-get clean
@@ -33,7 +32,6 @@ RUN echo "TZ='Europe/Paris'; export TZ" >> /etc/profile
 
 # Install SSH
 RUN apt-get install -y openssh-server
-RUN ufw allow ssh
 RUN echo 'root:docker' | chpasswd
 RUN apt-get install -y passwd
 RUN ssh-keygen -A
@@ -131,7 +129,7 @@ RUN a2enconf pimpmylog.conf
 
 # http://localhost/apache
 RUN mkdir /usr/share/apache2-defaultpage
-COPY conf/indexApache.html /usr/share/apache2-defaultpage/index.html
+RUN mv /var/www/html/index.html /usr/share/apache2-defaultpage/index.html
 RUN echo "Alias /apache /usr/share/apache2-defaultpage/" >> /etc/apache2/conf-available/apache2-defaultpage.conf
 RUN a2enconf apache2-defaultpage.conf
 
