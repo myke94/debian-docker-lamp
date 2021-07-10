@@ -31,7 +31,7 @@ To access default page apache visit [http://localhost/apache](http://localhost/a
 
 To access phpinfo visit [http://localhost/phpinfo](http://localhost/phpinfo)
 
-To access adminer visit [https://localhost/adminer](https://localhost/adminer)
+To access adminer visit [http://localhost/adminer](http://localhost/adminer)
 
 To access PimpMyLog visit [http://localhost/pimpmylog](http://localhost/pimpmylog)
 
